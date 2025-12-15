@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS onmyway;
+USE onmyway;
+
 -- Create Address table
 CREATE TABLE Address (
     id INT PRIMARY KEY, -- 'id' is unique as it is the primary key

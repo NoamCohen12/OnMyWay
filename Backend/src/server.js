@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 
 app.get('/users', async (req, res) => {
     try {
-        const [rows, fields] = await db.query('SELECT * FROM person');
+        const [rows, fields] = await db.query('SELECT * FROM Person');
         res.json(rows);
     } catch (error) {
         console.error(error);
