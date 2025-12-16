@@ -1,6 +1,6 @@
 # Dependencies
 node_modules/
-
+create_user.sql
 # Environment variables
 .env
 .env.local
