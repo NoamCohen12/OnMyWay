@@ -18,10 +18,14 @@ app.get('/', (req, res) => {
 
 app.get('/users', async (req, res) => {
     try {
-        const [rows, fields] = await db.query('SELECT * FROM person');
+        const [rows] = await db.query('SELECT * FROM Person');
         res.json(rows);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to fetch users' });
+        console.error('DB ERROR:', error);
+        res.status(500).json({
+            message: error.message,
+            code: error.code
+        });
     }
+
 });
