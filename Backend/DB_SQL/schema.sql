@@ -1,16 +1,21 @@
 CREATE DATABASE IF NOT EXISTS onmyway;
 USE onmyway;
 
+-- Drop tables if they exist to allow clean reset
+DROP TABLE IF EXISTS Confirmation;
+DROP TABLE IF EXISTS Person;
+DROP TABLE IF EXISTS Address;
+
 -- Create Address table
 CREATE TABLE Address (
-    id INT PRIMARY KEY, -- 'id' is unique as it is the primary key
+    id INT PRIMARY KEY AUTO_INCREMENT,
     x_coordinate FLOAT,
     y_coordinate FLOAT
 );
 
 -- Create Person table
 CREATE TABLE Person (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     f_name VARCHAR(255),
     l_name VARCHAR(255),
     address_id INT,
@@ -18,6 +23,7 @@ CREATE TABLE Person (
 );
 
 -- Insert dummy data into Address
+-- Note: We specify ID here to keep relationships consistent, but future inserts can omit it
 INSERT INTO Address (id, x_coordinate, y_coordinate) VALUES
 (1, 32.0853, 34.7818),
 (2, 31.7683, 35.2137),
@@ -31,6 +37,7 @@ INSERT INTO Address (id, x_coordinate, y_coordinate) VALUES
 (10, 31.8044, 34.6553);
 
 -- Insert dummy data into Person
+-- Note: We specify ID here to keep relationships consistent, but future inserts can omit it
 INSERT INTO Person (id, f_name, l_name, address_id) VALUES
 (101, 'Yossi', 'Cohen', 1),
 (102, 'Sarah', 'Levi', 2),
@@ -42,3 +49,22 @@ INSERT INTO Person (id, f_name, l_name, address_id) VALUES
 (108, 'Maya', 'Golan', 8),
 (109, 'Omer', 'Katz', 9),
 (110, 'Tamar', 'Shapiro', 10);
+
+CREATE TABLE Confirmation (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    person_id INT,
+    status_ride boolean,
+    FOREIGN KEY (person_id) REFERENCES Person(id)
+);
+
+Insert INTO Confirmation (person_id, status_ride) VALUES
+(101, true),
+(102, false),
+(103, true),
+(104, false),
+(105, true),
+(106, false),
+(107, true),
+(108, false),
+(109, true),
+(110, false);

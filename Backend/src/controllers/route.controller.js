@@ -7,6 +7,8 @@ export async function getRoute(req, res) {
       SELECT p.f_name, p.l_name, a.x_coordinate, a.y_coordinate
       FROM Person p
       JOIN Address a ON p.address_id = a.id
+      JOIN Confirmation c on p.id = c.person_id
+      WHERE c.status_ride = true
     `);
 
         const points = rows.map(r => ({
