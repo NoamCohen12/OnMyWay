@@ -1,4 +1,6 @@
 .Header {
     border: 1px solid red;
     background-color: aqua;
+    height: 10%;
+    width: 100%;
 }
