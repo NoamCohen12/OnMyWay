@@ -19,7 +19,16 @@ app.get('/', (req, res) => {
 
 app.get('/users', async (req, res) => {
     try {
-        const [rows] = await db.query('SELECT * FROM Person');
+        const [rows] = await db.query(`
+            SELECT 
+                p.id, 
+                p.f_name, 
+                p.l_name, 
+                p.address_id,
+                c.status_ride
+            FROM Person p
+            LEFT JOIN Confirmation c ON p.id = c.person_id
+        `);
         res.json(rows);
     } catch (error) {
         console.error('DB ERROR:', error);

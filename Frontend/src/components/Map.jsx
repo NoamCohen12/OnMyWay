@@ -38,7 +38,10 @@ export default function Map() {
                 {!loading && !error && (
                     <ul>
                         {passengers.map((passenger) => (
-                            <li key={passenger.id}>
+                            <li
+                                key={passenger.id}
+                                className={passenger.status_ride ? 'active-ride' : 'inactive-ride'}
+                            >
                                 {passenger.f_name} {passenger.l_name}
                             </li>
                         ))}
