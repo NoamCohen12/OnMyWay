@@ -51,8 +51,105 @@
     height: 100%;
 }
 
-.Statistics {
+.Route {
     width: 20%;
     height: 100%;
     border-left: 1px solid #ccc;
+}
+
+.Route h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.Route ol.route-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+
+/* Container for the step */
+.Route li.route-step {
+    padding: 0;
+    margin-bottom: 0;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: default;
+    transition: none;
+}
+
+/* The visual numbering counter */
+.Route ol.route-steps {
+    counter-reset: route-counter;
+    padding-left: 1rem;
+    /* Space for the line/numbers */
+}
+
+.Route li.route-step::before {
+    counter-increment: route-counter;
+    content: counter(route-counter);
+
+    /* Styling the circle badge */
+    width: 28px;
+    min-width: 28px;
+    /* Ensure it doesn't shrink */
+    height: 28px;
+    flex-shrink: 0;
+    /* Prevent flex shrinking */
+    background-color: #3e1d99;
+    /* Primary color */
+    color: white;
+    border-radius: 50%;
+
+    /* Centering the number */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: bold;
+
+    /* Positioning relative to the item */
+    margin-right: 12px;
+    z-index: 2;
+    /* Sit on top of the line */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* The connecting line */
+.Route li.route-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 14px;
+    /* Center of the 28px circle */
+    top: 28px;
+    /* Start right below the circle */
+    bottom: -10px;
+    /* Connect to the next item */
+    width: 2px;
+    background-color: #e0e0e0;
+    z-index: 1;
+}
+
+/* The name of the stop */
+.step-name {
+    padding: 0.75rem 1rem;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    flex-grow: 1;
+    font-weight: 500;
+    color: #333;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.Route li.route-step:hover .step-name {
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-color: #3e1d99;
 }
