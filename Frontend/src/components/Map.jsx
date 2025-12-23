@@ -31,10 +31,10 @@ const redIcon = new L.Icon({
 export default function Map() {
     const position = [32.09, 34.7818] // Tel Aviv
     const [passengers, setPassengers] = useState([])
+    const [route, setRoute] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-    // Fetch passengers from backend
     useEffect(() => {
         const fetchPassengers = async () => {
             try {
@@ -50,8 +50,23 @@ export default function Map() {
                 setLoading(false)
             }
         }
+        const fetchRoute = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/route')
+                if (!response.ok) {
+                    throw new Error('Failed to fetch route')
+                }
+                const data = await response.json()
+                setRoute(data)
+                setLoading(false)
+            } catch (err) {
+                setError(err.message)
+                setLoading(false)
+            }
+        }
 
         fetchPassengers()
+        fetchRoute()
     }, []) // Empty dependency array means this runs once on mount
 
     return (
@@ -97,8 +112,19 @@ export default function Map() {
                     ) : null
                 ))}
             </MapContainer>
-            <div className="Statistics">
-                statistics
+            <div className="Route">
+                <h3>The route</h3>
+                {loading && <p>Loading...</p>}
+                {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+                {!loading && !error && (
+                    <ol className="route-steps">
+                        {route.map((point) => (
+                            <li key={point.id} className="route-step">
+                                <span className="step-name">{point.name}</span>
+                            </li>
+                        ))}
+                    </ol>
+                )}
             </div>
         </div>
     )
