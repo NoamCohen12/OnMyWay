@@ -25,9 +25,12 @@ app.get('/users', async (req, res) => {
                 p.f_name, 
                 p.l_name, 
                 p.address_id,
-                c.status_ride
+                c.status_ride,
+                a.x_coordinate,
+                a.y_coordinate
             FROM Person p
             LEFT JOIN Confirmation c ON p.id = c.person_id
+            LEFT JOIN Address a ON p.address_id = a.id
         `);
         res.json(rows);
     } catch (error) {

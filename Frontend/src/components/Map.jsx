@@ -1,10 +1,35 @@
 import { useState, useEffect } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import './Map.css'
 
+
+// Icons
+const busIcon = new L.Icon({
+    iconUrl: '/icons/bus.png',
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+    popupAnchor: [0, -40],
+})
+
+const greenIcon = new L.Icon({
+    iconUrl: '/icons/marker-green.png',
+    iconSize: [30, 30],
+    iconAnchor: [15, 30],
+    popupAnchor: [0, -30],
+})
+
+const redIcon = new L.Icon({
+    iconUrl: '/icons/marker-red.png',
+    iconSize: [30, 30],
+    iconAnchor: [15, 30],
+    popupAnchor: [0, -30],
+})
+
+
 export default function Map() {
-    const position = [32.0853, 34.7818] // Tel Aviv
+    const position = [32.09, 34.7818] // Tel Aviv
     const [passengers, setPassengers] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -53,11 +78,24 @@ export default function Map() {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <Marker position={position}>
+                <Marker position={position} icon={busIcon}>
                     <Popup>
                         Where the ride begins
                     </Popup>
                 </Marker>
+                {passengers.map((passenger) => (
+                    passenger.x_coordinate && passenger.y_coordinate ? (
+                        <Marker
+                            key={passenger.id}
+                            position={[passenger.x_coordinate, passenger.y_coordinate]}
+                            icon={passenger.status_ride ? greenIcon : redIcon}
+                        >
+                            <Popup>
+                                {passenger.f_name} {passenger.l_name}
+                            </Popup>
+                        </Marker>
+                    ) : null
+                ))}
             </MapContainer>
             <div className="Statistics">
                 statistics
