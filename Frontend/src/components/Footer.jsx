@@ -3,7 +3,7 @@ import './Footer.css'
 export default function Footer() {
     return (
         <div className="Footer">
-            Footer
+            <p>© 2025 OnMyWay. All rights reserved.</p>
         </div>
     )
 }
