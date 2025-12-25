@@ -27,6 +27,13 @@ const redIcon = new L.Icon({
     popupAnchor: [0, -30],
 })
 
+const purpleIcon = new L.Icon({
+    iconUrl: '/icons/marker-purple.png',
+    iconSize: [30, 30],
+    iconAnchor: [15, 30],
+    popupAnchor: [0, -30],
+})
+
 
 export default function Map() {
     const position = [32.0853, 34.7818] // Tel Aviv Center
@@ -62,7 +69,12 @@ export default function Map() {
             const response = await fetch('http://localhost:3000/users')
             if (!response.ok) throw new Error('Failed to fetch passengers')
             const data = await response.json()
-            setPassengers(data)
+            // Sort: Arriving (true) first, undefined/false last
+            const sortedData = data.sort((a, b) => {
+                if (a.status_ride === b.status_ride) return 0;
+                return a.status_ride ? -1 : 1;
+            });
+            setPassengers(sortedData)
             setLoading(false)
         } catch (err) {
             console.error(err); // Log error but don't block UI on poll fail
@@ -222,7 +234,7 @@ export default function Map() {
                         <Marker
                             key={passenger.id}
                             position={[passenger.x_coordinate, passenger.y_coordinate]}
-                            icon={passenger.status_ride ? greenIcon : redIcon}
+                            icon={passenger.status_ride ? (checkedIds.has(passenger.id) ? purpleIcon : greenIcon) : redIcon}
                         >
                             <Popup>
                                 {passenger.f_name} {passenger.l_name}
@@ -238,14 +250,13 @@ export default function Map() {
                 {!loading && !error && (
                     <ol className="route-steps">
                         {route.map((point, index) => (
-                            console.log(point.id, index),
-                            <li key={index} className="route-step">
+                            <li key={point.id || index} className={`route-step ${checkedIds.has(point.id) ? 'checked' : ''}`}>
                                 <span className="step-name">{point.name}</span>
                                 <input
                                     className="route-checkbox"
                                     type="checkbox"
-                                    checked={checkedIds.has(index)}
-                                    onChange={() => toggleCheck(index)}
+                                    checked={checkedIds.has(point.id)}
+                                    onChange={() => toggleCheck(point.id)}
                                 />
                             </li>
                         ))}

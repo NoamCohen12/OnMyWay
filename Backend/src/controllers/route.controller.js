@@ -4,7 +4,7 @@ import { buildRoute } from '../services/route.service.js';
 export async function getRoute(req, res) {
     try {
         const [rows] = await db.query(`
-      SELECT p.f_name, p.l_name, a.x_coordinate, a.y_coordinate
+      SELECT p.id, p.f_name, p.l_name, a.x_coordinate, a.y_coordinate
       FROM Person p
       JOIN Address a ON p.address_id = a.id
       JOIN Confirmation c on p.id = c.person_id
@@ -12,6 +12,7 @@ export async function getRoute(req, res) {
     `);
 
         const points = rows.map(r => ({
+            id: r.id,
             name: `${r.f_name} ${r.l_name}`,
             x: r.x_coordinate,
             y: r.y_coordinate
