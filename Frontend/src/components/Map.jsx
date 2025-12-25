@@ -27,8 +27,8 @@ const redIcon = new L.Icon({
     popupAnchor: [0, -30],
 })
 
-const purpleIcon = new L.Icon({
-    iconUrl: '/icons/marker-purple.png',
+const blueIcon = new L.Icon({
+    iconUrl: '/icons/marker-blue.png',
     iconSize: [30, 30],
     iconAnchor: [15, 30],
     popupAnchor: [0, -30],
@@ -234,7 +234,7 @@ export default function Map() {
                         <Marker
                             key={passenger.id}
                             position={[passenger.x_coordinate, passenger.y_coordinate]}
-                            icon={passenger.status_ride ? (checkedIds.has(passenger.id) ? purpleIcon : greenIcon) : redIcon}
+                            icon={passenger.status_ride ? (checkedIds.has(passenger.id) ? blueIcon : greenIcon) : redIcon}
                         >
                             <Popup>
                                 {passenger.f_name} {passenger.l_name}
