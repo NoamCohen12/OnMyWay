@@ -55,19 +55,18 @@ Developed collaboratively by:
 ## 🖼️ Application Screens
 
 ### Login Screen (Role Selection)
-```
-[ IMAGE PLACEHOLDER – Login Screen ]
-```
 
-### Ride Escort Dashboard
-```
-[ IMAGE PLACEHOLDER – Ride Escort Dashboard ]
-```
+![Login Screen](./images/login.png)
 
 ### Parent Confirmation Screen
-```
-[ IMAGE PLACEHOLDER – Parent Confirmation Screen ]
-```
+![Parent-Confirmation Screen](./images/Parent-Confirmation.png)
+
+
+### Ride Escort Dashboard - main view
+![Ride-Escort-Dashboard](./images/escort-dashboard.png)
+
+
+
 
 ---
 
