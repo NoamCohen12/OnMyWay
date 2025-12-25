@@ -1,0 +1,108 @@
+/* Login Page Styles */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    direction: rtl;
+    /* RTL support for Hebrew */
+}
+
+.login-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    transition: transform 0.3s ease;
+}
+
+.login-card:hover {
+    transform: translateY(-5px);
+}
+
+.login-title {
+    color: #3e1d99;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
+
+.role-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.role-btn {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 1rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.role-btn:hover {
+    border-color: #3e1d99;
+    color: #3e1d99;
+    background-color: #f9f9ff;
+    box-shadow: 0 4px 12px rgba(62, 29, 153, 0.1);
+}
+
+.role-btn:active {
+    transform: scale(0.98);
+}
+
+.role-icon {
+    font-size: 1.5rem;
+}
+
+/* Logged In State Styles */
+.logged-in-container {
+    text-align: center;
+    padding: 2rem;
+    background: #f0f4f8;
+    border-radius: 8px;
+    margin: 2rem;
+}
+
+.role-display {
+    color: #3e1d99;
+    font-weight: bold;
+}
+
+.login-btn {
+    margin-top: 1.5rem;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, #3e1d99 0%, #6a4cdb 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(62, 29, 153, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(62, 29, 153, 0.4);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}

@@ -47,6 +47,14 @@ export default function Map() {
     useEffect(() => {
         fetchPassengers()
         fetchRoute()
+
+        // Poll for passenger and route updates every 5 seconds
+        const intervalId = setInterval(() => {
+            fetchPassengers();
+            fetchRoute();
+        }, 5000);
+        // Cleanup interval on unmount
+        return () => clearInterval(intervalId)
     }, [])
 
     const fetchPassengers = async () => {
@@ -57,8 +65,12 @@ export default function Map() {
             setPassengers(data)
             setLoading(false)
         } catch (err) {
-            setError(err.message)
-            setLoading(false)
+            console.error(err); // Log error but don't block UI on poll fail
+            // Only set error state on initial load if needed, otherwise keep showing old data
+            if (loading) {
+                setError(err.message)
+                setLoading(false)
+            }
         }
     }
 

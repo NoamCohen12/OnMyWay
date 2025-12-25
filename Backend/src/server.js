@@ -133,3 +133,48 @@ app.delete('/deleteUser/:id', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+
+app.get('/users/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const [rows] = await db.query(`
+            SELECT 
+                p.id, 
+                p.f_name, 
+                p.l_name, 
+                c.status_ride
+            FROM Person p
+            LEFT JOIN Confirmation c ON p.id = c.person_id
+            WHERE p.id = ?
+        `, [id]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.json(rows[0]);
+    } catch (error) {
+        console.error('DB ERROR:', error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
+app.put('/users/:id/status', async (req, res) => {
+    const { id } = req.params;
+    const { status_ride } = req.body;
+
+    try {
+        const [exists] = await db.query('SELECT * FROM Confirmation WHERE person_id = ?', [id]);
+
+        if (exists.length > 0) {
+            await db.query('UPDATE Confirmation SET status_ride = ? WHERE person_id = ?', [status_ride, id]);
+        } else {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.json({ success: true, message: 'Status updated' });
+    } catch (error) {
+        console.error('DB ERROR:', error);
+        res.status(500).json({ message: error.message });
+    }
+});
