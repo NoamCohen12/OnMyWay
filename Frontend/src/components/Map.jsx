@@ -34,6 +34,8 @@ export default function Map() {
     const [route, setRoute] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [checkedIds, setCheckedIds] = useState(new Set());
+
 
     useEffect(() => {
         const fetchPassengers = async () => {
@@ -69,6 +71,18 @@ export default function Map() {
         fetchRoute()
     }, []) // Empty dependency array means this runs once on mount
 
+
+    const toggleCheck = (id) => {
+        setCheckedIds((prev) => {
+            const newSet = new Set(prev);
+            if (newSet.has(id)) {
+                newSet.delete(id);
+            } else {
+                newSet.add(id);
+            }
+            return newSet;
+        });
+    };
     return (
         <div className="Map">
             <div className="PassengersList">
@@ -118,9 +132,16 @@ export default function Map() {
                 {error && <p style={{ color: 'red' }}>Error: {error}</p>}
                 {!loading && !error && (
                     <ol className="route-steps">
-                        {route.map((point) => (
-                            <li key={point.id} className="route-step">
+                        {route.map((point, index) => (
+                            console.log(point.id, index),
+                            <li key={index} className="route-step">
                                 <span className="step-name">{point.name}</span>
+                                <input
+                                    className="route-checkbox"
+                                    type="checkbox"
+                                    checked={checkedIds.has(index)}
+                                    onChange={() => toggleCheck(index)}
+                                />
                             </li>
                         ))}
                     </ol>
@@ -129,3 +150,4 @@ export default function Map() {
         </div>
     )
 }
+
