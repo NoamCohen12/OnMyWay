@@ -29,7 +29,7 @@ const redIcon = new L.Icon({
 
 
 export default function Map() {
-    const position = [32.09, 34.7818] // Tel Aviv
+    const position = [32.0853, 34.7818] // Tel Aviv Center
     const [passengers, setPassengers] = useState([])
     const [route, setRoute] = useState([])
     const [loading, setLoading] = useState(true)
@@ -37,39 +37,85 @@ export default function Map() {
     const [checkedIds, setCheckedIds] = useState(new Set());
 
 
-    useEffect(() => {
-        const fetchPassengers = async () => {
-            try {
-                const response = await fetch('http://localhost:3000/users')
-                if (!response.ok) {
-                    throw new Error('Failed to fetch passengers')
-                }
-                const data = await response.json()
-                setPassengers(data)
-                setLoading(false)
-            } catch (err) {
-                setError(err.message)
-                setLoading(false)
-            }
-        }
-        const fetchRoute = async () => {
-            try {
-                const response = await fetch('http://localhost:3000/route')
-                if (!response.ok) {
-                    throw new Error('Failed to fetch route')
-                }
-                const data = await response.json()
-                setRoute(data)
-                setLoading(false)
-            } catch (err) {
-                setError(err.message)
-                setLoading(false)
-            }
-        }
+    // Add User Form State
+    const [showAddForm, setShowAddForm] = useState(false);
+    const [newUser, setNewUser] = useState({ f_name: '', l_name: '', address: '' });
+    const [addError, setAddError] = useState('');
+    const [adding, setAdding] = useState(false);
 
+
+    useEffect(() => {
         fetchPassengers()
         fetchRoute()
-    }, []) // Empty dependency array means this runs once on mount
+    }, [])
+
+    const fetchPassengers = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/users')
+            if (!response.ok) throw new Error('Failed to fetch passengers')
+            const data = await response.json()
+            setPassengers(data)
+            setLoading(false)
+        } catch (err) {
+            setError(err.message)
+            setLoading(false)
+        }
+    }
+
+    const fetchRoute = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/route')
+            if (!response.ok) throw new Error('Failed to fetch route')
+            const data = await response.json()
+            setRoute(data)
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    const handleAddUser = async (e) => {
+        e.preventDefault();
+        setAdding(true);
+        setAddError('');
+
+        try {
+            const response = await fetch('http://localhost:3000/addUser', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newUser)
+            });
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to add user');
+            }
+
+            // Success: Refresh list and clear form
+            await fetchPassengers();
+            setNewUser({ f_name: '', l_name: '', address: '' });
+            setShowAddForm(false);
+        } catch (err) {
+            setAddError(err.message);
+        } finally {
+            setAdding(false);
+        }
+    };
+
+    const handleDeleteUser = async (id, e) => {
+        e.stopPropagation(); // Prevent li click logic if added later
+        if (!confirm('Are you sure you want to delete this passenger?')) return;
+
+        try {
+            const response = await fetch(`http://localhost:3000/deleteUser/${id}`, { method: 'DELETE' });
+            if (!response.ok) throw new Error('Failed to delete');
+
+            // Optimistic update or refresh
+            setPassengers(prev => prev.filter(p => p.id !== id));
+        } catch (err) {
+            alert(err.message);
+        }
+    };
+
 
 
     const toggleCheck = (id) => {
@@ -87,6 +133,44 @@ export default function Map() {
         <div className="Map">
             <div className="PassengersList">
                 <h3>Passengers</h3>
+
+                <button
+                    className="add-passenger-btn"
+                    onClick={() => setShowAddForm(!showAddForm)}
+                >
+                    {showAddForm ? 'Cancel' : '+ Add Passenger'}
+                </button>
+
+                {showAddForm && (
+                    <form className="add-user-form" onSubmit={handleAddUser}>
+                        <input
+                            type="text"
+                            placeholder="First Name"
+                            required
+                            value={newUser.f_name}
+                            onChange={e => setNewUser({ ...newUser, f_name: e.target.value })}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Last Name"
+                            required
+                            value={newUser.l_name}
+                            onChange={e => setNewUser({ ...newUser, l_name: e.target.value })}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Address (Israel)"
+                            required
+                            value={newUser.address}
+                            onChange={e => setNewUser({ ...newUser, address: e.target.value })}
+                        />
+                        <button type="submit" disabled={adding}>
+                            {adding ? 'Adding...' : 'Save Passenger'}
+                        </button>
+                        {addError && <div className="error-message">{addError}</div>}
+                    </form>
+                )}
+
                 {loading && <p>Loading...</p>}
                 {error && <p style={{ color: 'red' }}>Error: {error}</p>}
                 {!loading && !error && (
@@ -96,7 +180,16 @@ export default function Map() {
                                 key={passenger.id}
                                 className={passenger.status_ride ? 'active-ride' : 'inactive-ride'}
                             >
-                                {passenger.f_name} {passenger.l_name}
+                                <span className="passenger-name">
+                                    {passenger.f_name} {passenger.l_name}
+                                </span>
+                                <button
+                                    className="delete-btn"
+                                    onClick={(e) => handleDeleteUser(passenger.id, e)}
+                                    title="Delete Passenger"
+                                >
+                                    ×
+                                </button>
                             </li>
                         ))}
                     </ul>

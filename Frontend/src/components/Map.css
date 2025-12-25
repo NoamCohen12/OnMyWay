@@ -40,10 +40,119 @@
 
 .PassengersList li.active-ride {
     border: 2px solid #4CAF50;
+    /* Green border */
 }
 
 .PassengersList li.inactive-ride {
-    opacity: 0.5;
+    opacity: 0.7;
+    background-color: #f0f0f0;
+}
+
+/* Add Passenger Section */
+.add-passenger-btn {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, #3e1d99 0%, #6a4cdb 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.add-passenger-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(62, 29, 153, 0.3);
+}
+
+.add-user-form {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    border: 1px solid #eee;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.add-user-form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.add-user-form button[type="submit"] {
+    width: 100%;
+    padding: 8px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.add-user-form button[type="submit"]:disabled {
+    background-color: #94d3a2;
+}
+
+.error-message {
+    color: #d32f2f;
+    font-size: 0.85rem;
+    margin-top: 5px;
+}
+
+/* List Items with Delete */
+.PassengersList li {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background-color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 1;
+    border-radius: 4px;
+    visibility: hidden;
+    /* Hide by default, show on hover */
+}
+
+.PassengersList li:hover .delete-btn {
+    visibility: visible;
+}
+
+.delete-btn:hover {
+    color: #d32f2f;
+    background-color: #ffebee;
 }
 
 #mapContainer {

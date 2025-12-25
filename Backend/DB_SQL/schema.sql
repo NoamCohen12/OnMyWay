@@ -10,7 +10,8 @@ DROP TABLE IF EXISTS Address;
 CREATE TABLE Address (
     id INT PRIMARY KEY AUTO_INCREMENT,
     x_coordinate FLOAT,
-    y_coordinate FLOAT
+    y_coordinate FLOAT,
+    full_address VARCHAR(255)
 );
 
 -- Create Person table
@@ -23,21 +24,19 @@ CREATE TABLE Person (
 );
 
 -- Insert dummy data into Address
--- Note: We specify ID here to keep relationships consistent, but future inserts can omit it
-INSERT INTO Address (id, x_coordinate, y_coordinate) VALUES
-(1, 32.0853, 34.7818),
-(2, 31.7683, 35.2137),
-(3, 32.7940, 34.9896),
-(4, 29.5581, 34.9482),
-(5, 32.1663, 34.8432),
-(6, 31.2518, 34.7913),
-(7, 32.9324, 35.1872),
-(8, 31.8903, 34.8113),
-(9, 32.7019, 35.3035),
-(10, 31.8044, 34.6553);
+INSERT INTO Address (x_coordinate, y_coordinate, full_address) VALUES
+(32.0780, 34.7741, 'Dizengoff Square, Tel Aviv'),      -- כיכר דיזנגוף
+(32.0716, 34.7876, 'Sarona Market, Tel Aviv'),         -- שרונה מרקט
+(32.0963, 34.7738, 'Tel Aviv Port, Tel Aviv'),         -- נמל תל אביב
+(32.0726, 34.7794, 'Habima Square, Tel Aviv'),         -- כיכר הבימה
+(32.0743, 34.7921, 'Azrieli Center, Tel Aviv'),        -- עזריאלי
+(32.0583, 34.7709, 'Florentin St, Tel Aviv'),          -- פלורנטין
+(32.0628, 34.7713, 'Rothschild Blvd, Tel Aviv'),       -- שדרות רוטשילד
+(32.0806, 34.7806, 'Rabin Square, Tel Aviv'),          -- כיכר רבין
+(32.0553, 34.7563, 'Jaffa Clock Tower, Tel Aviv'),     -- שעון יפו (טכנית ת"א-יפו)
+(32.0827, 34.7675, 'Gordon Beach, Tel Aviv');         -- חוף גורדון
 
 -- Insert dummy data into Person
--- Note: We specify ID here to keep relationships consistent, but future inserts can omit it
 INSERT INTO Person (id, f_name, l_name, address_id) VALUES
 (101, 'Yossi', 'Cohen', 1),
 (102, 'Sarah', 'Levi', 2),
