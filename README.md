@@ -59,7 +59,7 @@ Developed collaboratively by:
 ![Login Screen](./images/login.png)
 
 ### Parent Confirmation Screen
-![Parent-Confirmation Screen](./images/Parent-Confirmation.png)
+![Parent-Confirmation Screen](./images/parent-confirmation.png)
 
 
 ### Ride Escort Dashboard - main view
