@@ -7,7 +7,7 @@ export default function Login({ onLogin }) {
     return (
         <div className="login-container">
             <div className="login-card">
-                <h2 className="login-title">Welcome to OnMyWay! </h2>
+                <h2 className="login-title">Welcome to OnMyWay </h2>
 
                 <div className="role-selection">
                     <button className="role-btn" onClick={() => setRole('attendant')}>
