@@ -5,6 +5,7 @@ USE onmyway;
 DROP TABLE IF EXISTS Confirmation;
 DROP TABLE IF EXISTS Person;
 DROP TABLE IF EXISTS Address;
+DROP TABLE IF EXISTS Attendant;
 
 -- Create Address table
 CREATE TABLE Address (
@@ -22,6 +23,18 @@ CREATE TABLE Person (
     address_id INT,
     FOREIGN KEY (address_id) REFERENCES Address(id)
 );
+-- create drivers table
+CREATE TABLE Attendant (
+    id INT PRIMARY KEY,
+    f_name VARCHAR(255),
+    l_name VARCHAR(255)
+);
+
+-- Insert dummy data into Attendant
+INSERT INTO Attendant (id, f_name, l_name) VALUES
+(12345678, 'Yair', 'Cohen'),
+(87654321, 'Bar', 'Levi');
+
 
 -- Insert dummy data into Address
 INSERT INTO Address (x_coordinate, y_coordinate, full_address) VALUES

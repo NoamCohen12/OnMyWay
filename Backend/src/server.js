@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import db from './db.js';
 import { getRoute } from './controllers/route.controller.js';
+import { loginAttendant } from './controllers/auth.controller.js';
 import axios from 'axios';
 
 const app = express();
@@ -17,6 +18,8 @@ app.listen(port, () => {
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
+
+app.post('/login/attendant', loginAttendant);
 
 app.get('/users', async (req, res) => {
     try {

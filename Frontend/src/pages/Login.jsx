@@ -10,9 +10,9 @@ export default function Login({ onLogin }) {
                 <h2 className="login-title">Welcome to OnMyWay! </h2>
 
                 <div className="role-selection">
-                    <button className="role-btn" onClick={() => setRole('driver')}>
+                    <button className="role-btn" onClick={() => setRole('attendant')}>
                         <span className="role-icon">🚐</span>
-                        <span>Driver</span>
+                        <span>Attendant</span>
                     </button>
 
                     <button className="role-btn" onClick={() => setRole('parent')}>
@@ -23,7 +23,7 @@ export default function Login({ onLogin }) {
                 {role && (
                     <>
                         <p className="role-display">
-                            Selected: {role === 'driver' ? 'Driver' : 'Parent'}
+                            Selected: {role === 'attendant' ? 'Attendant' : 'Parent'}
                         </p>
 
                         <button
