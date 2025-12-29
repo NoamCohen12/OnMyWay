@@ -33,7 +33,7 @@ export default function ParentDashboard() {
 
         // Optimistic update
         const previousStatus = childData.status_ride;
-        setChildData(prev => ({ ...prev, status_ride: newStatus ? 1 : 0 })); // Adjust for DB boolean 1/0
+        setChildData(prev => ({ ...prev, status_ride: newStatus })); // Adjust for DB boolean 1/0
 
         try {
             const response = await fetch(`http://localhost:3000/users/${childId}/status`, {
@@ -57,7 +57,7 @@ export default function ParentDashboard() {
         return (
             <div className="parent-dashboard-container">
                 <div className="parent-card">
-                    <h2 className="dashboard-title">Enter child ID 👋</h2>
+                    <h2 className="dashboard-title">👋Enter child ID</h2>
 
                     <div className="input-group">
                         <input
@@ -86,19 +86,19 @@ export default function ParentDashboard() {
     return (
         <div className="parent-dashboard-container">
             <div className="parent-card">
-                <h2 className="dashboard-title">Hello, Parent 👋</h2>
+                <h2 className="dashboard-title">👋Hello, Parent </h2>
 
                 <div className="child-info">
                     <div className="info-row">
-                        <span className="info-label">Child Name:</span>
+                        <span className="info-label">Child Name: </span>
                         <span className="info-value">{childData.f_name} {childData.l_name}</span>
                     </div>
                     <div className="info-row">
-                        <span className="info-label">Child ID:</span>
+                        <span className="info-label">Child ID: </span>
                         <span className="info-value">{childData.id}</span>
                     </div>
                     <div className="info-row">
-                        <span className="info-label">Ride Status:</span>
+                        <span className="info-label">Ride Status: </span>
                         <span className="info-value" style={{ color: childData.status_ride ? 'green' : 'red' }}>
                             {childData.status_ride ? 'Going' : 'Not Going'}
                         </span>

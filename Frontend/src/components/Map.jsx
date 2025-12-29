@@ -1,8 +1,62 @@
-import { useState, useEffect } from 'react'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { useState, useEffect, useRef, useMemo } from 'react'
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+import 'leaflet-routing-machine'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import './Map.css'
+
+
+function Routing({ points, onInstructions }) {
+    const map = useMap();
+    const routingRef = useRef(null);
+
+    useEffect(() => {
+        if (!map || points.length < 2) return;
+
+        if (routingRef.current) {
+            try {
+                map.removeControl(routingRef.current);
+            } catch (e) {
+                console.warn('Routing already removed');
+            }
+            routingRef.current = null;
+        }
+
+        const routingControl = L.Routing.control({
+            waypoints: points.map(p => L.latLng(p[0], p[1])),
+            router: L.Routing.osrmv1({
+                serviceUrl: 'https://router.project-osrm.org/route/v1'
+            }),
+            lineOptions: {
+                styles: [{ color: '#2563eb', weight: 5 }]
+            },
+            addWaypoints: false,
+            draggableWaypoints: false,
+            fitSelectedRoutes: false,
+            show: false,
+            createMarker: () => null
+        }).addTo(map);
+
+        routingControl.on('routesfound', (e) => {
+            const steps = e.routes[0]?.instructions || [];
+            onInstructions(steps);
+        });
+
+        routingRef.current = routingControl;
+
+        return () => {
+            if (routingRef.current) {
+                try {
+                    map.removeControl(routingRef.current);
+                } catch { }
+                routingRef.current = null;
+            }
+        };
+    }, [map, points]);
+
+    return null;
+}
+
 
 
 // Icons
@@ -42,6 +96,7 @@ export default function Map() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [checkedIds, setCheckedIds] = useState(new Set());
+    const [instructions, setInstructions] = useState([]);
 
 
     // Add User Form State
@@ -153,6 +208,21 @@ export default function Map() {
             return newSet;
         });
     };
+    // console.log('route raw:', route);
+
+
+    const routePoints = useMemo(() => {
+        if (route.length === 0) return [];
+
+        return [
+            position, // location of the bus
+            ...route
+                .filter(p => p.x && p.y)
+                .map(p => [p.x, p.y])
+        ];
+    }, [route]);
+
+    // console.log('routePoints:', routePoints);
     return (
         <div className="Map">
             <div className="PassengersList">
@@ -242,15 +312,27 @@ export default function Map() {
                         </Marker>
                     ) : null
                 ))}
+                {routePoints.length > 1 && (
+                    <Routing
+                        points={routePoints}
+                        onInstructions={setInstructions}
+                    />
+                )}
+
             </MapContainer>
             <div className="Route">
                 <h3>The route</h3>
+
                 {loading && <p>Loading...</p>}
                 {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+
                 {!loading && !error && (
                     <ol className="route-steps">
                         {route.map((point, index) => (
-                            <li key={point.id || index} className={`route-step ${checkedIds.has(point.id) ? 'checked' : ''}`}>
+                            <li
+                                key={point.id || index}
+                                className={`route-step ${checkedIds.has(point.id) ? 'checked' : ''}`}
+                            >
                                 <span className="step-name">{point.name}</span>
                                 <input
                                     className="route-checkbox"
@@ -262,7 +344,27 @@ export default function Map() {
                         ))}
                     </ol>
                 )}
+
+                <div className="RouteInstructions">
+                    <h4>Route Instructions</h4>
+
+                    {instructions.length === 0 ? (
+                        <p>Loading route instructions...</p>
+                    ) : (
+                        <ol>
+                            {instructions.map((step, index) => (
+                                <li key={index}>
+                                    {step.text}
+                                    <span className="distance">
+                                        ({Math.round(step.distance)} מ׳)
+                                    </span>
+                                </li>
+                            ))}
+                        </ol>
+                    )}
+                </div>
             </div>
+
         </div>
     )
 }

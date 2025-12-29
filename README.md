@@ -63,7 +63,7 @@ Developed collaboratively by:
 
 
 ### Ride Escort Dashboard - main view
-![Ride-Escort-Dashboard](./images/escort-dashboard.png)
+![Ride-ant-Dashboard](./images/attendant-dashboard.png)
 
 
 
