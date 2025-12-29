@@ -237,7 +237,8 @@ export default function Map() {
                             icon={passenger.status_ride ? (checkedIds.has(passenger.id) ? blueIcon : greenIcon) : redIcon}
                         >
                             <Popup>
-                                {passenger.f_name} {passenger.l_name}
+                                <div><strong>{passenger.f_name} {passenger.l_name}</strong></div>
+                                <div>{passenger.full_address}</div>
                             </Popup>
                         </Marker>
                     ) : null
@@ -251,7 +252,10 @@ export default function Map() {
                     <ol className="route-steps">
                         {route.map((point, index) => (
                             <li key={point.id || index} className={`route-step ${checkedIds.has(point.id) ? 'checked' : ''}`}>
-                                <span className="step-name">{point.name}</span>
+                                <div className="step-name">
+                                    <div className="step-point-name"><strong>{point.name}</strong></div>
+                                    <div className="step-point-address">{point.address}</div>
+                                </div>
                                 <input
                                     className="route-checkbox"
                                     type="checkbox"
