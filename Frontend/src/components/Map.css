@@ -186,6 +186,9 @@
     padding: 0;
     margin: 0;
     position: relative;
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
 }
 
 /* Container for the step */
@@ -259,21 +262,10 @@
     border: 1px solid #eee;
     border-radius: 8px;
     flex-grow: 1;
+    font-weight: 500;
     color: #333;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s, box-shadow 0.2s;
-    display: flex;
-    flex-direction: column;
-}
-
-.step-point-name {
-    font-weight: 600;
-    margin-bottom: 2px;
-}
-
-.step-point-address {
-    font-size: 0.8rem;
-    color: #666;
 }
 
 .Route li.route-step:hover .step-name {
@@ -300,12 +292,31 @@
     display: none !important;
 }
 
+/* Custom Scrollbar for Route Steps */
+.Route ol.route-steps::-webkit-scrollbar {
+    width: 6px;
+}
+
+.Route ol.route-steps::-webkit-scrollbar-track {
+    background: rgba(62, 29, 153, 0.05);
+    border-radius: 10px;
+}
+
+.Route ol.route-steps::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #3e1d99 0%, #6a4cdb 100%);
+    border-radius: 10px;
+}
+
+.Route ol.route-steps::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #2e0d89 0%, #5a3ccb 100%);
+}
+
 .RouteInstructions {
     margin: 16px 1rem 1rem 1rem;
     padding: 16px;
     background: linear-gradient(135deg, #f8f9ff 0%, #fff5f8 100%);
     border-radius: 12px;
-    max-height: 470px;
+    max-height: 450px;
     overflow-y: auto;
     font-size: 14px;
     box-shadow: 0 4px 12px rgba(62, 29, 153, 0.08);

@@ -23,6 +23,17 @@ The main goal of this system is to provide a **ride escort** with a reliable too
 Parents only confirm participation, while the escort sees an aggregated and ordered route.
 
 ---
+## 🧩 System Architecture (High Level)
+
+The system follows a classic client-server architecture:
+- React frontend communicates with a RESTful Express backend
+- Backend handles business logic, database access, and geocoding
+- MySQL stores persistent passenger, address, and confirmation data
+This separation allows clear responsibility boundaries and easy future scaling.
+
+
+
+---
 
 ## 👥 Authors
 
@@ -54,6 +65,9 @@ Developed collaboratively by:
 
 ## 🖼️ Application Screens
 
+### Attendant Dashboard - main view
+![Ride-ant-Dashboard](./images/attendant-dashboard.png)
+
 ### Login Screen (Role Selection)
 
 ![Login Screen](./images/login.png)
@@ -61,10 +75,26 @@ Developed collaboratively by:
 ### Parent Confirmation Screen
 ![Parent-Confirmation Screen](./images/parent-confirmation.png)
 
+### Add Passenger Screen
+![attendant-Verification Screen](./images/attendant-verification.png)
 
-### Ride Escort Dashboard - main view
-![Ride-ant-Dashboard](./images/attendant-dashboard.png)
 
+
+
+
+
+
+---
+## 👤 User Roles
+
+- **Attendant**
+  - Manages passengers
+  - Views full route and pickup order
+  - Sees real-time confirmation status
+
+- **Parent**
+  - Confirms or declines child participation
+  - Has access only to their child’s status
 
 
 
@@ -83,6 +113,16 @@ The application uses **Leaflet** with **OpenStreetMap** tiles to visualize:
 - Ordered pickup route list synchronized with map markers
 
 Passenger addresses are automatically geocoded using the **OpenStreetMap Nominatim API** when a new passenger is added.
+Routing is calculated dynamically using OSRM and rendered directly on the map.
+
+
+---
+## ✨ UX Highlights
+
+- Live route visualization synced with passenger list
+- Clear visual feedback for ride status (colors & icons)
+- Minimal interactions for parents (single confirmation action)
+- Designed for tablet / mobile use by attendants during rides
 
 ---
 
@@ -106,6 +146,14 @@ Passenger addresses are automatically geocoded using the **OpenStreetMap Nominat
 - id (PK)
 - person_id (FK)
 - status_ride (BOOLEAN)
+
+#### attendant
+- id (PK)
+- f_name
+- l_name
+- address_id (FK)
+
+The schema is normalized to avoid duplication of address data.
 
 ---
 
@@ -160,9 +208,24 @@ cd Frontend
 npm install
 npm run dev
 ```
+## ⚠️ Known Limitations (MVP)
+
+- Route optimization is order-based, not time-optimized
+- No authentication layer (planned for future version)
+- OSRM public demo server is used for routing
+
+---
+## 🚀 Future Improvements
+
+- Authentication & role-based access control
+- Real-time updates using WebSockets
+- Advanced route optimization (time, traffic, constraints)
+- Mobile-first UI improvements
 
 ---
 
 ## 📌 Project Status
 
 This project is a **full-stack MVP**, built to model a real-world ride management system with parent confirmation and map-based route visualization.
+The project is actively evolving and serves as a foundation for future production-ready features.
+
